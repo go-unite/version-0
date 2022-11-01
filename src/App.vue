@@ -1,5 +1,16 @@
+<script>
+  import Navigation from './components/Navigation.vue'
+
+  export default {
+    components: {
+      Navigation
+    }
+  }
+</script>
+
 <template>
-  <p>HI</p>
+  <Navigation />
+  <router-view></router-view>
 </template>
 
 <style>
