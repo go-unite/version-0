@@ -9,17 +9,17 @@ Please check out the following things before digging into this projects:
 ## The App
 
 This project is our first (official) attempt at our cross-platform app. We try to be as modular as we can be wherever possible, and here that means *stages*:
-0. This prototype
+1. This prototype
     1. Backend setup
     2. Interfaces for: creating, editing, and viewing templates
-1. Alpha
+2. Alpha
     1. Workflow for testing templates
     2. Building out features of user accounts
-2. Beta
+3. Beta
     1. Template Assignment Workflow
     2. Verification Workflow
     3. Community Testing
-3. TBA...
+4. TBA...
 
 For now, the project is a [Vue3](https://vuejs.org/) app using [firebase](https://firebase.google.com/) for hosting, authenitication and database management. And we're all ears!
   
