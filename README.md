@@ -36,13 +36,13 @@ Head over to the [projects tab](https://github.com/go-unite/prototype/projects) 
 For small things, PLEASE go ahead and make a pull request. For anything else, have a look through the [issues](https://github.com/go-unite/prototype/issues), and if you don’t think your contribution is already being discussed feel free to [create a new one](https://help.github.com/en/articles/creating-an-issue).
 
 # Contact Us
-<a href="https://www.facebook.com/gounite.xyz">
+<a href="https://www.facebook.com/gounite.xyz" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/facebook_OP.png" alt="facebook icon"/>
 </a>
-<a href="https://www.patreon.com/gounite" style="margin:10px; height:20px; width:20px">
+<a href="https://www.patreon.com/gounite" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/patreon_OP.png" alt="patreon icon"/>
 </a>
-<a href="https://www.twitter.com/go_unite">
+<a href="https://www.twitter.com/go_unite" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/twitter_OP.png" alt="twitter icon"/>
 </a>
 
