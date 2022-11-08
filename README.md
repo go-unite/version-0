@@ -11,14 +11,16 @@ Please check out the following things before digging into this projects:
 This project is our first (official) attempt at our cross-platform app. We try to be as modular as we can be wherever possible, and here that means *stages*:
 1. This prototype
     1. Backend setup
-    2. Interfaces for: creating, editing, and viewing templates
+    2. Basic user stats
+    3. Interfaces for: creating, editing (your own), and viewing (others') templates
 2. Alpha
     1. Workflow for testing templates
     2. Building out features of user accounts
+    3. Testing of live event functionality
 3. Beta
-    1. Template Assignment Workflow
-    2. Verification Workflow
-    3. Community Testing
+    1. Role Assignment Workflow
+    2. Work Verification Workflow
+    3. Community Testing of app (???)
 4. TBA...
 
 For now, the project is a [Vue3](https://vuejs.org/) app using [firebase](https://firebase.google.com/) for hosting, authenitication and database management. And we're all ears!
@@ -36,13 +38,13 @@ Head over to the [projects tab](https://github.com/go-unite/prototype/projects) 
 For small things, PLEASE go ahead and make a pull request. For anything else, have a look through the [issues](https://github.com/go-unite/prototype/issues), and if you don’t think your contribution is already being discussed feel free to [create a new one](https://help.github.com/en/articles/creating-an-issue).
 
 # Contact Us
-<a href="https://www.facebook.com/gounite.xyz">
+<a href="https://www.facebook.com/gounite.xyz" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/facebook_OP.png" alt="facebook icon"/>
 </a>
-<a href="https://www.patreon.com/gounite" style="margin:10px; height:20px; width:20px">
+<a href="https://www.patreon.com/gounite" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/patreon_OP.png" alt="patreon icon"/>
 </a>
-<a href="https://www.twitter.com/go_unite">
+<a href="https://www.twitter.com/go_unite" target="_blank">
   <img style="margin:10px; height:40px; width:40px" src="/readmeAssets/twitter_OP.png" alt="twitter icon"/>
 </a>
 
