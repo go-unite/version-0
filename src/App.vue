@@ -1,19 +1,38 @@
-<script>
-  import Navigation from './components/Navigation.vue'
-
-  export default {
-    components: {
-      Navigation
-    }
-  }
-</script>
 
 <template>
-  <Navigation />
-  <router-view></router-view>
+  <nav>
+    <button @click="handleSignOut" v-if="isLoggedIn">Sign Out</button>
+  </nav>
+  <router-view />
 </template>
 
-<style>
+<script setup>
+import { onMounted, ref } from "vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
+const router = useRouter();
+const isLoggedIn = ref(false);
+
+let auth;
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true;
+    } else {
+      isLoggedIn.value = false;
+    }
+  });
+});
+
+const handleSignOut = () => {
+  signOut(auth).then(() => {
+    router.push("/register")
+  })
+}
+</script>
+
+<style setup>
 @import 'bulma/css/bulma-rtl.min.css';
 
 .testApp {
