@@ -9,7 +9,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useRouter } from 'vue-router'
 const email = ref("");
 const password = ref("");
@@ -43,6 +43,14 @@ const signIn = () => {
 
 }
 const signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(getAuth(), provider)
+    .then((result) => {
+      console.log(result.user);
+      router.push("/authHome");
+    })
+    .catch((error) => {
 
+    });
 }
 </script>
