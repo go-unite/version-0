@@ -1,3 +1,8 @@
+<template>
+  <p>Launch</p>
+  
+</template>
+
 <script>
 import Navigation from '../components/Navigation.vue'
 
@@ -7,6 +12,3 @@ export default {
   }
 }
 </script>
-<template>
-  Home
-</template>

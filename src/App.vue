@@ -1,4 +1,3 @@
-
 <template>
   <nav>
     <button @click="handleSignOut" v-if="isLoggedIn">Sign Out</button>
@@ -9,6 +8,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const isLoggedIn = ref(false);

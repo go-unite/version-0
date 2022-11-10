@@ -5,6 +5,7 @@
   <p v-if="errMsg">{{ errMsg }}</p>
   <p><button @click="signIn">Submit</button></p>
   <p><button @click="signInWithGoogle">Sign in with Google</button></p>
+  <router-link to="/register">Register</router-link>
 </template>
 
 <script setup>
@@ -20,7 +21,7 @@ const signIn = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((data) => {
       console.log("successfully signed in!");
-      router.push('/authHome')
+      router.push('/Home')
     })
     .catch((error) => {
       console.log(error.code);
@@ -47,7 +48,7 @@ const signInWithGoogle = () => {
   signInWithPopup(getAuth(), provider)
     .then((result) => {
       console.log(result.user);
-      router.push("/authHome");
+      router.push("/Home");
     })
     .catch((error) => {
 

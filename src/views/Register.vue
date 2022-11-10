@@ -4,6 +4,7 @@
   <p><input type="password" placeholder="Password" v-model="password" /></p>
   <p><button @click="register">Submit</button></p>
   <p><button @click="signInWithGoogle">Sign in with Google</button></p>
+  <router-link to="/signIn">Sign In</router-link>
 </template>
 
 <script setup>
@@ -22,7 +23,7 @@ const register = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((data) => {
       console.log("successfully registered!");
-      router.push('/authHome')
+      router.push('/Home')
     })
     .catch((error) => {
       console.log(error.code);
@@ -35,7 +36,7 @@ const signInWithGoogle = () => {
   signInWithPopup(getAuth(), provider)
     .then((result) => {
       console.log(result.user);
-      router.push("/authHome");
+      router.push("/Home");
     })
     .catch((error) => {
 
