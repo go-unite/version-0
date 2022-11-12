@@ -1,7 +1,5 @@
 <template>
-  <nav>
-    <button @click="handleSignOut" v-if="isLoggedIn">Sign Out</button>
-  </nav>
+  <Navigation></Navigation>
   <router-view />
 </template>
 
@@ -9,11 +7,14 @@
 import { onMounted, ref } from "vue";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
+import Navigation from "./components/Navigation.vue";
+
 
 const router = useRouter();
 const isLoggedIn = ref(false);
 
 let auth;
+
 onMounted(() => {
   auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -24,7 +25,9 @@ onMounted(() => {
     }
   });
 });
-
+const goBack = () => {
+  router.go(-1)
+}
 const handleSignOut = () => {
   signOut(auth).then(() => {
     router.push("/register")
@@ -35,8 +38,4 @@ const handleSignOut = () => {
 <style setup>
 @import 'bulma/css/bulma-rtl.min.css';
 
-.testApp {
-  max-width: 80%;
-  margin: 0 auto;
-}
 </style>

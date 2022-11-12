@@ -1,8 +1,7 @@
 <template>
-  Launch
+  All the templates
 </template>
 
 <script>
-
 
 </script>

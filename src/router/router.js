@@ -7,11 +7,19 @@ const router = createRouter({
     { path: '/', alias: '/signIn', component: () => import('../views/SignIn.vue') },
     { path: '/about', component: () => import('../views/About.vue') },
     { path: '/register', component: () => import('../views/Register.vue') },
+    { path: '/templatesDB', component: () => import('../views/TemplatesDB.vue') },
+    { path: '/templateMaker', component: () => import('../views/TemplateMaker.vue') },
+    { path: '/profile',
+      component: () => import('../views/Profile.vue'),
+      meta: {
+        requiresAuth: true,
+      } },
     { path: '/home',
       component: () => import('../views/Home.vue'),
       meta: {
         requiresAuth: true,
-      } }
+      } },
+    { path: '/'}
   ]
 })
 
@@ -33,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
     if (await getCurrentUser()) {
       next();
     } else {
-      alert("you dont have access!");
+      alert("you gotta sign in first!");
       next("/");
     } 
   } else {

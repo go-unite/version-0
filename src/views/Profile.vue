@@ -1,8 +1,7 @@
 <template>
-  Launch
+  Profile Page
 </template>
 
 <script>
-
 
 </script>
