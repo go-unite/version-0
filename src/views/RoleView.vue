@@ -1,5 +1,5 @@
 <template>
-  Launch
+  Template View
 </template>
 
 <script>

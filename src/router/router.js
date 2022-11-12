@@ -6,20 +6,24 @@ const router = createRouter({
   routes: [
     { path: '/', alias: '/signIn', component: () => import('../views/SignIn.vue') },
     { path: '/about', component: () => import('../views/About.vue') },
-    { path: '/register', component: () => import('../views/Register.vue') },
-    { path: '/templatesDB', component: () => import('../views/TemplatesDB.vue') },
-    { path: '/templateMaker', component: () => import('../views/TemplateMaker.vue') },
+    { path: '/home',
+    component: () => import('../views/Home.vue'),
+    meta: {
+      requiresAuth: true,
+    } },
+    { path: '/newTemplate', component: () => import('../views/newTemplate.vue') },
     { path: '/profile',
       component: () => import('../views/Profile.vue'),
       meta: {
         requiresAuth: true,
       } },
-    { path: '/home',
-      component: () => import('../views/Home.vue'),
-      meta: {
-        requiresAuth: true,
-      } },
-    { path: '/'}
+    { path: '/register', component: () => import('../views/Register.vue') },
+    { path: '/reportATemplate', component: () => import('../views/ReportATemplate.vue') },
+    { path: '/roleView', component: () => import('../views/RoleView.vue') },
+    { path: '/taskView', component: () => import('../views/TaskView.vue') },
+    { path: '/templateMaker', component: () => import('../views/TemplateMaker.vue') },
+    { path: '/templatesDB', component: () => import('../views/TemplatesDB.vue') },
+    { path: '/templateView', component: () => import('../views/TemplateView.vue') },
   ]
 })
 
