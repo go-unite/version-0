@@ -7,24 +7,25 @@
     </div>
   </section>
   <div class="box">
-    <router-link to="/templateMaker">
+    <router-link to="/templateMaking">
       <button class="button is-large is-fullwidth">
-        Template Maker
+        Template Making
       </button>
     </router-link>
   </div>
   <div class="box">
-    <button class="button is-large is-fullwidth">
-      <router-link to="/templatesDB">
+    <router-link to="/templateList">
+      <button class="button is-large is-fullwidth">
         Templates Database
-      </router-link>
-    </button>
+      </button>
+    </router-link>
   </div>
 </template>
 
 <script>
 
 </script>
+
 <style>
  
 </style>

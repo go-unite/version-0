@@ -1,0 +1,89 @@
+{
+    "templateID": {
+        "classification": {
+            "GNAD class": "",
+            "WOC sector": "",
+            "parameters": {
+                "in/out/mixed": "",
+                "independent": true,
+                "mental demand": true,
+                "physical demand": true,
+                "public facing": true
+            }
+        },
+        "commitment": {
+            "people": 1,
+            "time": 1
+        },
+        "name": "",
+        "owner": {
+            "collaborators": [
+                ""
+            ],
+            "creator": ""
+        },
+        "version#": 1,
+        "feedback": {
+            "collaborator": {
+                "ticket#": {
+                    "comment": "",
+                    "roleID": "",
+                    "taskID": "",
+                    "userID": ""
+                }
+        },
+        "parts": {
+            "location": {
+                "capacity": 1,
+                "facilities": {
+                    "power": true,
+                    "restroom": true,
+                    "trash": true,
+                    "water": true,
+                    "hospital": 1
+                },
+                "spots": {
+                    "spot name": {
+                        "max posts": 1,
+                        "total visitors": 1
+                    }
+                },
+                "type": ""
+                },
+            "materials": {
+                "materialID": {
+                    "need": [
+                        1,
+                        "",
+                        ""
+                    ],
+                    "source": {
+                        "accounted": true,
+                        "purchase": true
+                    }
+                }
+            }
+            },
+        "roles": {
+            "roleID": {
+                "name": "",
+                "credentials": {
+                    "credID": ""
+                },
+                "requirements": {
+                    "reqID": ""
+                },
+                "tasks": {
+                    "stepID": [
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]
+                }
+            }
+        }
+        }
+    }
+    
+}

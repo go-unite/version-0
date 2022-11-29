@@ -51,7 +51,7 @@
   <router-link to='/profile'>Profile</router-link> -->
 </template>
 <script>
-/* export default {
+export default {
   methods: {
     goBack() {
       return this.$router.go(-1);
@@ -62,5 +62,5 @@
       })
     }
   }
-} */
+}
 </script>

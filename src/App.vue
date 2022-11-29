@@ -1,5 +1,4 @@
 <template>
-  <Navigation></Navigation>
   <router-view />
 </template>
 
@@ -7,7 +6,6 @@
 import { onMounted, ref } from "vue";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
-import Navigation from "./components/Navigation.vue";
 
 
 const router = useRouter();
