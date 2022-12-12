@@ -4,25 +4,24 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/about', component: () => import('../views/About.vue') },
-    { path: '/home',
-    component: () => import('../views/Home.vue'),
+    { path: '/home',  component: () => import('../views/Home.vue'),
     meta: {
       requiresAuth: true,
     } },
-    { path: '/newTemplateForm', component: () => import('../views/newTemplateForm.vue') },
     { path: '/profile',
     component: () => import('../views/Profile.vue'),
     meta: {
       requiresAuth: true,
     } },
+    { path: '/', component: () => import('../views/SignIn.vue'), alias: '/signIn', },
+    { path: '/about', component: () => import('../views/About.vue') },
     { path: '/register', component: () => import('../views/Register.vue') },
     { path: '/roleView', component: () => import('../views/RoleView.vue') },
-    { path: '/', alias: '/signIn', component: () => import('../views/SignIn.vue') },
     { path: '/taskView', component: () => import('../views/TaskView.vue') },
     { path: '/templateList', component: () => import('../views/TemplateList.vue') },
     { path: '/templateMaking', component: () => import('../views/TemplateMaking.vue') },
-    { path: '/templateView', component: () => import('../views/TemplateView.vue') }
+    { path: '/templateForm', component: () => import('../views/TemplateForm.vue') },
+    { path: '/templateView/:name', component: () => import('../views/TemplateView.vue') },
   ]
 })
 

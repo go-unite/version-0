@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <router-link to="/templateNew/newTemplate">
+    <router-link to="/templateForm">
       <button class="button is-large is-fullwidth">
         New Template
       </button>

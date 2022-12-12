@@ -1,11 +1,13 @@
+<!-- THIS SEEMS TO BE THE RIGHT/MAIN VERSION OF 'INDEX.HTML' -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
+    <!-- <link rel="icon" href="/favicon.ico"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go Unite app</title>
 
+    <script> import firebase from 'firebase/app'; </script>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/9.12.1/firebase-app-compat.js"></script>
@@ -24,6 +26,7 @@
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <script type="module" crossorigin src="/assets/index.f7a580b2.js"></script>
 
   </head>
   <body>
@@ -63,7 +66,7 @@
           loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
         } catch (e) {
           console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+          loadEl.textContent = 'Error loading the Firebase SDK, check the console.'
         }
       });
     </script>

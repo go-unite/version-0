@@ -1,4 +1,72 @@
 <template>
+  <header>
+    <div
+      :*class*="{'active':index === formPosition}"
+      *v-for*="(step, index) in formGroup"
+      :*key*="'step'+index">
+      {{ index + 1 }}
+    </div>
+  </header>
+  <section>
+    <h2>{{ formGroup[formPosition].title }}</h2>
+    <div>
+      <div v-for="(field, index) in formGroup[formPosition].fields" :key="'field'+index">
+        <input type="text" v-model="field.value" required>
+        <label>{{ field.label }}</label>
+        <button v-if="formPosition+1 < formGroup.length-1" @click="nextStep">next</button>
+        <button v-if="formPosition+1 === formGroup.length-1">enter</button>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+  import { fbApp, db } from '../firebase/firebase';
+  export default {
+    data: () => {
+      return {
+        formPosition: 0,
+        animation: 'animate-in',
+        formGroup: [
+          {title: "",
+            fields: [
+              {label: "title", value: "" },
+              {label: "title", value: "" }
+            ]
+          }
+        ]
+      }
+    },
+    methods: {
+      nextStep() {
+        this.animation = 'animate-out';
+        setTimeout(() => {
+          this.animation = 'animate-in';
+          this.formPosition += 1;
+        }, 600);
+      },
+      handleSubmit() {
+        let inputForm = {
+          outline: {
+          },
+        }
+      }
+    }
+  }
+
+</script>
+<style>
+  .animation-in {
+    transform-origin:left;
+    animation: in .6s ease-in-out;
+  }
+  .animation-out {
+    transform-origin:bottom left;
+    animation: out .6s ease-in-out;
+  }
+</style>
+
+<!-- <template>
   <form @submit="handleSubmit">
     <div class="box">
       <div class="field">
@@ -213,4 +281,4 @@ export default {
   }
 
 
-</script>
+</script> -->

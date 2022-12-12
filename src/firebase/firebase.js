@@ -19,7 +19,7 @@ const db = getFirestore(fbApp);
 const analytics = getAnalytics(fbApp);
 
 export {
-  db,
   fbApp,
+  db,
   analytics
 }
