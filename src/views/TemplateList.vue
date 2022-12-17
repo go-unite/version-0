@@ -18,14 +18,19 @@
 
 <template>
   <div v-for="template in templates" :key="template.name" class="card mb-5">
-    <router-link :to="{path:'/templateView/'+template.name}">
-      <div class="card-content">
-        <div class="content">
+    <router-link :to="{ name:'templateView', params: {id: template.id}}">
+      <div class="card-header">
+        <div class="card-header-title">
           <div class="columns is-mobile is-vcentered">
             <div class="column">
-              {{ template.name }}
+              {{ template.title }}
             </div>
           </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          {{ template.id}}
         </div>
       </div>
     </router-link>
@@ -46,7 +51,7 @@
     let fbTemplates = []
     querySnapshot.forEach((doc) => {
       const template = {
-        name: doc.data().name,
+        title: doc.data().title,
         id: doc.id
       }
       fbTemplates.push(template)
