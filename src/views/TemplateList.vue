@@ -17,45 +17,54 @@
 -->
 
 <template>
-  <div v-for="template in templates" :key="template.name" class="card mb-5">
-    <router-link :to="{ name:'templateView', params: {id: template.id}}">
+  <div v-for="version in versions" :key="version.vID" class="card mb-5">
+    <!-- <router-link :to="{ name: 'templateView' , params: {fullID: version.fullID} }"> -->
       <div class="card-header">
         <div class="card-header-title">
           <div class="columns is-mobile is-vcentered">
             <div class="column">
-              {{ template.title }}
+              {{version.fullID}}
             </div>
           </div>
         </div>
       </div>
-      <div class="card-content">
-        <div class="content">
-          {{ template.id}}
-        </div>
-      </div>
-    </router-link>
+    <!-- </router-link> -->
   </div>
 </template>
 
 <script setup>
   import { ref, onMounted } from 'vue';
-  import { collection, doc, getDocs } from 'firebase/firestore';
+  import { collection, getDocs } from 'firebase/firestore';
   import { db } from '../firebase/firebase';
 
-  const templates = ref([
+  const versions = ref([
 
   ]);
 
   onMounted(async () => {
-    const querySnapshot = await getDocs(collection(db, "Templates"))
+    const templatesCollection = await getDocs(collection(db, "Templates"))
+    
     let fbTemplates = []
-    querySnapshot.forEach((doc) => {
-      const template = {
-        title: doc.data().title,
-        id: doc.id
-      }
-      fbTemplates.push(template)
+    let allVersions = []
+    
+    templatesCollection.forEach((doc) => {
+      const tID = doc.id
+      fbTemplates.push(tID)
     })
-    templates.value = fbTemplates
+    
+    fbTemplates.forEach(async (fbTemp) => {      
+      const versionsSubCollect = await getDocs(collection(db, "Templates/"+fbTemp+"/versions"))
+      versionsSubCollect.forEach((doc) => {
+        const ver = {
+          tID: fbTemp,
+          vID: doc.id,
+          title: doc.data().title,
+          fullID: fbTemp + "." + doc.id
+        }
+        allVersions.push(ver)
+      })
+    })
+    console.log(allVersions)
+    versions.value = allVersions
   });
 </script>
