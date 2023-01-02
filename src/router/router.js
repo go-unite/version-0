@@ -22,7 +22,7 @@ const router = createRouter({
     { path: '/templateList', component: () => import('../views/TemplateList.vue') },
     { path: '/templateMaking', component: () => import('../views/TemplateMaking.vue') },
     { path: '/templateForm', component: () => import('../views/TemplateForm.vue') },
-    { path: '/templateView/:id', name: 'templateView', component: () => import('../views/TemplateView.vue') },
+    { path: '/templateView/:fullID', name: 'templateView', props: true, component: () => import('../views/TemplateView.vue') },
   ]
 })
 
