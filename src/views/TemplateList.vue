@@ -43,39 +43,39 @@
       }
     },
     setup() {
-      const versions = ref([]);
+      const versions = ref([])
       
       onMounted(async () => {
-        const templatesCollection = await getDocs(collection(db, "Templates"));
+        const templatesCollection = await getDocs(collection(db, "Templates"))
     
         let fbTemplates = [];
         let allVersions = [];
     
         templatesCollection.forEach((doc) => {
-          const tID = doc.id;
-          fbTemplates.push(tID);
+          const tID = doc.id
+          fbTemplates.push(tID)
         });
     
         const versionPromises = fbTemplates.map(async (fbTemp) => {
-          const versionsSubCollect = await getDocs(collection(db, "Templates/"+fbTemp+"/versions"));
+          const versionsSubCollect = await getDocs(collection(db, "Templates/"+fbTemp+"/versions"))
           versionsSubCollect.forEach((doc) => {
             const ver = {
               tID: fbTemp,
               vID: doc.id,
               title: doc.data().title,
               fullID: fbTemp + "." + doc.id
-            };
+            }
             allVersions.push(ver);
-          });
-        });
+          })
+        })
     
         await Promise.all(versionPromises);
         versions.value = allVersions;
-      });
+      })
       
       return {
         versions,
-      };
+      }
     },
   }
 </script>

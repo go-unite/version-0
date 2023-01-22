@@ -1,161 +1,291 @@
-<!-- <template>
-  <h1 class="title"> {{ version.name }} </h1>
+<template>
+  <h1 class="title"> {{ fsVersion.name }} </h1>
   <h5 class="subtitle"> Template: {{ tID }} Version: {{ vID }} </h5>
+  <div class="block">
+    <div class="sutitle">Overview</div>
+    <div class="block">
+      Outline: {{ fsVersion.outline }}
+    </div>
+    <div class="block">
+      Impact: {{ fsVersion.impact }}
+    </div>
+  </div>
+  <div class="block">
+    <div class="subtitle">Details</div>
+    <div class="columns">
+      <div class="column">
+        <div>roles</div>
+        <div v-for="(role, key) in fsVersion.instructions.roles" v-bind:key="key" class="card mb-5">
+          <div class="card-content">
+            <div class="media-content">
+              <div class="title is-6">
+                {{ key }}
+              </div>
+            </div>
+            <div class="content">
+              {{ role.note }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div>parts</div>
+        <div v-for="(material, key) in fsVersion.parts.materials" v-bind:key="key" class="card mb-5">
+          <div class="card-content">
+            <div class="media-content">
+              <div class="title is-6">
+                {{ key }}
+              </div>
+            </div>
+            <div class="content">
+              {{ material.need.quantity }} {{ material.need.measure }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div>Location</div>
+      <div class="columns">
+        <div class="column">
+          <div class="box">
+            <div class="media-content">
+              <div class="title is-6"> General </div>
+            </div>
+            <div class="card-content">
+              <div>max capacity: {{ fsVersion.parts.location.capacity }}</div>
+              <div>location type: {{ fsVersion.parts.location.type }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <div class="media-content">
+              <div class="title is-6"> Spots Needed </div>
+            </div>
+              <div v-for="(spot, key) in fsVersion.parts.location.spots" v-bind:key="key" class="card mb-5">
+                <div class="card-content">
+                  <div class="media-content"> 
+                    <div class="title is 4"> {{ key }} </div>
+                  </div>
+                  <div class="content"> posts: {{ spot.posts }} </div>
+                  <div class="content"> visitors: {{ spot.visitors }} </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <div class="media-content">
+              <div class="title is-6"> Facility Needs </div>
+            </div>
+            <ul>
+              <li v-for="(facil, key) in fsVersion.parts.location.facilities" v-bind:key="key">{{ key }} : {{ facil }}</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="subtitle">Timeline</div>
+    <div class="block">
+      <div class="tabs is-toggle is-fullwidth">
+        <ul>
+          <li :class="preClass" @click="currentTab = 'pre'">
+            <a>Pre</a>
+          </li>
+          <li :class="mainClass" @click="currentTab = 'main'">
+            <a>Main</a>
+          </li>
+          <li :class="postClass" @click="currentTab = 'post'">
+            <a>Post</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="currentTab === 'pre'" class="">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Happening</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(note,key) in fsVersion.instructions.timeline.pre" v-bind:key="key">
+            <td>{{ key }}</td>
+            <td>{{ note }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="currentTab === 'main'" class="">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Happening</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(note,key) in fsVersion.instructions.timeline.main" v-bind:key="key">
+            <td>{{ key }}</td>
+            <td>{{ note }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="currentTab === 'post'" class="">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Happening</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(note,key) in fsVersion.instructions.timeline.post" v-bind:key="key">
+            <td>{{ key }}</td>
+            <td>{{ note }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="block">
+
+  </div>
 </template>
 
 <script>
-  import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import { collection, getDoc, doc } from 'firebase/firestore';
+  import { getDoc, doc } from 'firebase/firestore';
   import { db } from '../firebase/firebase';
   
   export default {
     data() {
       return {
-      }
-    },
-    computed() {
-      
-    },
-    setup() {
-      const route = useRoute()
-      const fullID = route.params.fullID
-      const tID = fullID.slice(0,7)
-      const vID = fullID.slice(8,12)
-      
-      class Deets {
-        constructor(fields, instructions, parts) {
-          this.fields=fields;
-          this.instructions=instructions;
-          this.parts=parts;
-        }
-      }
+        currentTab: 'pre',
+        fsVersion: {
+          name: "",
+          outline: "",
+          impact: "",
+          classification: {},
+          commitment: {},
+          ownership: {},
+          instructions: {
+            roles: {
+            
+            },
+            timeline: {
+              pre: {},
+              main: {},
+              post: {}
+            }
+          },
+          parts: {
+            location: {
+              capacity: "",
+              type: "",
+              facilities: {
 
-      onMounted(async () => {
-        const versionDocRef = await getDoc(doc(db, "Templates/"+tID+"/versions/"+vID))
-        const versionFields = versionDocRef.data()
-        
-        const instructionsCollectRef = collection(db, versionDocRef, "instructions")
-        const timelineDocRef = getDoc(doc(db, instructionsCollectRef, "materials"))
-        const rolesDocRef = getDoc(doc(db, instructionsCollectRef, "materials"))
-        const instructObj = {
-          timeline: timelineDocRef.data(),
-          roles: rolesDocRef.data(),
+              },
+              spots: {
+                posts: "",
+                visitors: ""
+              }
+            },
+            materials: {
+              
+            }
+          }
+        },
+        tID: "",
+        vID: "",
+      }
+    },
+
+    async created() {
+      try {
+        const fullID = this.$route.params.fullID
+        const tID = fullID.slice(0,7)
+        this.tID = tID
+        const vID = fullID.slice(8,12)
+        this.vID = vID 
+        const versionPath = "Templates/"+tID+"/versions/"+vID+"/"
+
+        const versionDocRef = doc(db, versionPath)
+        const locationDocRef = doc(db, versionPath+"parts", "location")
+        const materialsDocRef = doc(db, versionPath+"parts", "materials")
+        const timelineDocRef = doc(db, versionPath+"instructions", "timeline")
+        const rolesDocRef = doc(db, versionPath+"instructions", "roles")
+
+        //Version top fields
+        const versionDoc = await getDoc(versionDocRef)
+        if (versionDoc.exists) {
+          this.fsVersion.name = versionDoc.data().name
+          this.fsVersion.classification = versionDoc.data().classification
+          this.fsVersion.commitment = versionDoc.data().commitment
+          this.fsVersion.ownership = versionDoc.data().ownership
+          this.fsVersion.impact = versionDoc.data().impact
+          this.fsVersion.outline = versionDoc.data().outline
+        } else {
+          console.log("no such version!")
         }
-        
-        const partsCollectRef = collection(db, versionDocRef, "roles")
-        const locationDocRef = getDoc(doc(db, partsCollectRef, "location"))
-        const materialsDocRef = getDoc(doc(db, partsCollectRef, "materials"))
-        const partsObj = {
-          location: locationDocRef.data(),
-          materials: materialsDocRef.data(),
+        //Instructions Collection
+        const rolesDoc = await getDoc(rolesDocRef)
+        if (rolesDoc.exists) {
+          this.fsVersion.instructions.roles = rolesDoc.data()
+        } else {
+          console.log("no such roles document")
         }
-        
-        const version = new Deets(versionFields, instructObj, partsObj)
-      })
+
+        const timelineDoc = await getDoc(timelineDocRef)
+        if (timelineDoc.exists) {
+          this.fsVersion.instructions.timeline.pre = timelineDoc.data().pre
+          this.fsVersion.instructions.timeline.main = timelineDoc.data().main
+          this.fsVersion.instructions.timeline.post = timelineDoc.data().post
+        } else {
+          console.log("no such timeline!")
+        }
+        console.log(this.fsVersion.instructions.timeline.main)
+
+        //Parts Collection
+        const materialsDoc = await getDoc(materialsDocRef)
+        if (materialsDoc.exists) {
+          this.fsVersion.parts.materials = materialsDoc.data()
+        } else {
+          console.log("no such materials document")
+        }
+
+        const locationDoc = await getDoc(locationDocRef)
+        if (locationDoc.exists) {
+          this.fsVersion.parts.location = locationDoc.data()
+
+        } else {
+          console.log("no such location document")
+        }
+      } catch (error) {
+        console.log("error getting data from firestore:", error)
+      }
+      console.log(this.fsVersion.parts.location)
+    },
+    computed: {
+      preClass() {
+        return this.currentTab === 'pre' ? 'is-active' : ''
+      },
+      mainClass() {
+        return this.currentTab === 'main' ? 'is-active' : ''
+      },
+      postClass() {
+        return this.currentTab === 'post' ? 'is-active' : ''
+      },
+    },
+    methods: {
+      changeTab(tab) {
+        this.currentTab = tab
+      }
     }
   }
-</script>
- -->
-
-<template>
-<Suspense>
-  <template #default>
-    <h1 class="title"> {{ versionDeets.fields.name }} </h1>
-    <h5 class="subtitle"> Template: {{ tID }} Version: {{ vID }} </h5>
-    <h5 class="subtitle"> Fields: {{ versionDeets.fields }} </h5>
-    <h5 class="subtitle"> Instructions: {{ instructions }} </h5>
-    <h5 class="subtitle"> Parts: {{ parts }} </h5>
-  </template>
-  <template #fallback>
-    Loading...
-  </template>
-</Suspense>
-</template>
-
-<script>
-import { ref, watch, Suspense } from 'vue';
-import { useRoute } from 'vue-router';
-import { collection, getDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
-
-export default {
-  async setup() {
-    const route = useRoute();
-    const fullID = route.params.fullID;
-    const tID = fullID.slice(0, 7);
-    const vID = fullID.slice(8, 12);
-
-    const versionDeets = ref({
-      fields,
-      instructions,
-      parts,
-    });
-
-    // Add a loading state
-    const loading = ref(true);
-
-    // Fetch the version document
-    const versionDocRef = await getDoc(doc(db, "Templates/" + tID + "/versions/" + vID));
-
-    const versionFields = versionDocRef.data();
-
-    // Fetch the instructions collection
-    const instructionsCollectRef = collection(db, versionDocRef, "instructions");
-    // Fetch the timeline and roles documents
-    const timelineDocRef = getDoc(doc(db, instructionsCollectRef, "timeline"));
-    const rolesDocRef = getDoc(doc(db, instructionsCollectRef, "roles"));
-
-    // Wait for both documents to be fetched
-    const [timeline, roles] = await Promise.all([timelineDocRef, rolesDocRef]);
-
-    // Create the instructions object
-    const instructions = {
-      timeline: timeline.data(),
-      roles: roles.data(),
-    };
-
-    // Fetch the parts collection
-    const partsCollectRef = collection(db, versionDocRef, "parts");
-    // Fetch the location and materials documents
-    const locationDocRef = getDoc(doc(db, partsCollectRef, "location"));
-    const materialsDocRef = getDoc(doc(db, partsCollectRef, "materials"));
-
-    // Wait for both documents to be fetched
-    const [location, materials] = await Promise.all([locationDocRef, materialsDocRef]);
-
-    // Create the parts object
-    const parts = {
-      location: location.data(),
-      materials: materials.data(),
-    };
-
-    // Assign a new Deets object to versionDeets
-    versionDeets.value = {
-      fields: versionFields,
-      instructions,
-      parts,
-    };
-
-    // Watch for changes to versionDeets and update loading state
-    watch(
-      () => versionDeets.value,
-      () => {
-        loading.value = false;
-      }
-    );
-
-    return {
-      versionDeets, // add versionDeets to the returned object
-      loading, // add loading state to the returned object
-      tID, // add tID to the returned object
-      vID, // add vID to the returned object
-      instructions, // add instructions to the returned object
-      parts, // add parts to the returned object
-    };
-  },
-  components: {
-    Suspense,
-  },
-}
 </script>
