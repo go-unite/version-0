@@ -17,6 +17,7 @@ This project is our first (official) attempt at our cross-platform app. We try t
     1. Workflow for testing templates
     2. Building out features of user accounts
     3. Testing of live event functionality
+    4. Building out a marketplace features 
 3. Beta
     1. Role Assignment Workflow
     2. Work Verification Workflow
