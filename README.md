@@ -16,12 +16,12 @@ This project is our first (official) attempt at our cross-platform app. We try t
 2. Alpha
     1. Workflow for testing templates
     2. Building out features of user accounts
-    3. Testing of live event functionality
-    4. Building out a marketplace features 
+    3. Building out a marketplace features 
 3. Beta
-    1. Role Assignment Workflow
-    2. Work Verification Workflow
-    3. Community Testing of app (???)
+    1. Testing of live event functionality
+    2. Role Assignment Workflow
+    3. Work Verification Workflow
+    4. Community Testing of app (???)
 4. TBA...
 
 For now, the project is a [Vue3](https://vuejs.org/) app using [firebase](https://firebase.google.com/) for hosting, authenitication and database management. And we're all ears!
