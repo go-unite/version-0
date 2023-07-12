@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="column">
-        <div>parts</div>
+        <div>materials</div>
         <div v-for="(material, key) in fsVersion.parts.materials" v-bind:key="key" class="card mb-5">
           <div class="card-content">
             <div class="media-content">
@@ -154,9 +154,21 @@
       </table>
     </div>
   </div>
-  <div class="block">
-
-  </div>
+  <!--
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <a class="pagination-previous">Previous</a>
+    <ul class="pagination-list">
+      <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+      <li><span class="pagination-ellipsis">&hellip;</span></li>
+      <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+      <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+      <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+      <li><span class="pagination-ellipsis">&hellip;</span></li>
+      <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+    </ul>
+    <a class="pagination-next">Next page</a>
+  </nav>
+-->
 </template>
 
 <script>
@@ -167,6 +179,8 @@
     data() {
       return {
         currentTab: 'pre',
+        tID: "",
+        vID: "",
         fsVersion: {
           name: "",
           outline: "",
@@ -201,8 +215,6 @@
             }
           }
         },
-        tID: "",
-        vID: "",
       }
     },
 
@@ -221,7 +233,7 @@
         const timelineDocRef = doc(db, versionPath+"instructions", "timeline")
         const rolesDocRef = doc(db, versionPath+"instructions", "roles")
 
-        //Version top fields
+        //Version fields
         const versionDoc = await getDoc(versionDocRef)
         if (versionDoc.exists) {
           this.fsVersion.name = versionDoc.data().name

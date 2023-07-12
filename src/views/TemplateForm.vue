@@ -1,284 +1,252 @@
 <template>
-  <header>
-    <div
-      :*class*="{'active':index === formPosition}"
-      *v-for*="(step, index) in formGroup"
-      :*key*="'step'+index">
-      {{ index + 1 }}
+  <div class="field is-grouped mb-5">
+    <p class="control is-expanded">
+      <input v-model="nameInput" class="input is-large" type="text" placeholder="Name of your template">
+    </p>
+    <p class="control">
+      <button class="button" @click.prevent="updateName">
+        save
+      </button>
+    </p>
+  </div>
+  <div class="block">
+    <div class="title is-4">Overview</div>
+    <div class="box">
+      <div class="subtitle">Outline:</div>
+      <p class="control">
+        <input v-model="outlineInput" class="textarea" placeholder="Outline of what you're going for">
+      </p>
+      <p class="control">
+        <button class="button" @click.prevent="updateOutline">
+          save
+        </button>
+      </p>
     </div>
-  </header>
-  <section>
-    <h2>{{ formGroup[formPosition].title }}</h2>
-    <div>
-      <div v-for="(field, index) in formGroup[formPosition].fields" :key="'field'+index">
-        <input type="text" v-model="field.value" required>
-        <label>{{ field.label }}</label>
-        <button v-if="formPosition+1 < formGroup.length-1" @click="nextStep">next</button>
-        <button v-if="formPosition+1 === formGroup.length-1">enter</button>
+    <div class="box">
+      <div class="subtitle">Impact:</div>
+      <p class="control">
+        <input v-model="impactInput" class="textarea" placeholder="Impact you're going for">
+      </p>
+      <p class="control">
+        <button class="button" @click.prevent="saveImpact">
+          save
+        </button>
+      </p>
+    </div>
+  </div>
+  <div class="block">
+    <div class="title is-4">Details</div>
+    <div class="columns">
+      <div class="column">
+        <div class="title is-5">roles</div>
+        <div class="box">
+          <div v-for="(role, key) in currentVersion.instructions.roles" v-bind:key="key" class="card mb-5">
+            <div class="card-content">
+              <div class="media-content">
+                <div class="title is-6">
+                  {{ key }}
+                </div>
+              </div>
+              <div class="content">
+                {{ role.note }}
+              </div>
+            </div>
+          </div>
+          <AddNewCard type="role" @addRole="(data) => addNewItem(data, 'role')" />
+        </div>
+      </div>
+      <div class="column">
+        <div class="title is-5">materials</div>
+        <div class="box">
+          <div v-for="(material, key) in currentVersion.parts.materials" v-bind:key="key" class="card mb-5">
+            <div class="card-content">
+              <div class="media-content">
+                <div class="title is-6">
+                  {{ key }}
+                </div>
+              </div>
+              <div class="content">
+                {{ material.need.quantity }} {{ material.need.measure }}
+              </div>
+            </div>
+          </div>
+          <AddNewCard type="material" @addMaterial="(data) => addNewItem(data, 'material')" />
+        </div>
       </div>
     </div>
-  </section>
+    <div class="block">
+      <div class="title is-5">Location</div>
+      <div class="columns">
+        <div class="column">
+          <div class="box">
+            <div class="media-content">
+              <div class="title is-6"> General </div>
+            </div>
+            <div class="card-content" v-if="currentVersion.parts.location.capacity && currentVersion.parts.location.type">
+              <div class="subtitle">max capacity: </div>
+              <div class="columns">
+                <div class="column">
+                  <input type="range" min="1" max="101" step="10" class="slider" id="capactiyRange" v-model="currentVersion.parts.location.capacity">
+                </div>
+                <div class="column">
+                  <div class="subtitle">{{ currentVersion.parts.location.capacity }}</div>
+                </div>
+              </div>
+              <div class="subtitle">location type: </div>
+              <div class="columns">
+                <div class="column">
+                  <input type="range" min="1" max="3" class="slider" id="locationType" v-model="locationTypeInput" @input="formatLocationType">
+                </div>
+                <div class="column">
+                  <div class="subtitle">{{ currentVersion.parts.location.type }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <div class="media-content">
+              <div class="title is-6"> Spots Needed </div>
+            </div>
+            <div class="card-content">
+              <AddNewCard type="spot" @addSpot="(data) => addNewItem(data, 'spot')" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <TimelineTable :currentVersionData="currentVersion.instructions.timeline" />
 </template>
 
 <script>
-  import { fbApp, db } from '../firebase/firebase';
+  import { db } from '../firebase/firebase';
+  import {  } from 'firebase/firestore';
+  import AddNewCard from '../components/AddNewCard.vue';
+  import TimelineTable from '../components/TimelineTable.vue';
+  import { ref } from 'vue';
+  
   export default {
-    data: () => {
+    data() {
       return {
-        formPosition: 0,
-        animation: 'animate-in',
-        formGroup: [
-          {title: "",
-            fields: [
-              {label: "title", value: "" },
-              {label: "title", value: "" }
-            ]
+        tID: "",
+        vID: "",
+        nameInput: "",
+        outlineInput: "",
+        impactInput: "",
+        locationTypeInput: "",
+        type: "",
+        currentVersion: {
+          name: "",
+          outline: "",
+          impact: "",
+          classification: {},
+          commitment: {},
+          ownership: {},
+          instructions: {
+            roles: {},
+            timeline: {}
+          },
+          parts: {
+            location: {
+              capacity: 1,
+              type: "Mixed",
+              facilities: {
+                power: "",
+                trash: "",
+                water: "",
+                restrooms: "",
+                hospital: ""
+              },
+              spots: []
+            },
+            materials: []
           }
-        ]
+        },
+      };
+    },
+    components: { 
+      AddNewCard,
+      TimelineTable 
+    },
+    created() {
+    /* 
+      try {
+        the document references from template view
+        const versionPath = "Templates/" + tID + "/versions/" + vID + "/";
+        const versionDocRef = doc(db, versionPath)
+        const locationDocRef = doc(db, versionPath+"parts", "location")
+        const materialsDocRef = doc(db, versionPath+"parts", "materials")
+        const timelineDocRef = doc(db, versionPath+"instructions", "timeline")
+        const rolesDocRef = doc(db, versionPath+"instructions", "roles")
+      }
+      catch (error) {
+        console.log("error getting data from firestore:", error);
+      }
+    */
+    },
+    computed: {
+      formatLocationType() {
+        let locationType;
+        switch (Number(this.locationTypeInput)) {
+          case 1:
+            locationType = "Indoor";
+            break;
+          case 2:
+            locationType = "Mixed";
+            break;
+          case 3:
+            locationType = "Outdoor";
+            break;
+          default:
+            locationType = "invalid";
+          }
+          this.currentVersion.parts.location.type = locationType
       }
     },
     methods: {
-      nextStep() {
-        this.animation = 'animate-out';
-        setTimeout(() => {
-          this.animation = 'animate-in';
-          this.formPosition += 1;
-        }, 600);
+      updateName() {
+        this.currentVersion.name = this.nameInput
+        console.log(this.currentVersion.name)
       },
-      handleSubmit() {
-        let inputForm = {
-          outline: {
-          },
+      updateImpact() {
+        this.currentVersion.impact = this.impactInput
+      },
+      updateOutline() {
+        this.currentVersion.outline = this.outlineInput
+      },
+      updateCapacity() {
+        console.log(this.currentVersion.parts.location.capacity)
+      },
+      updateLocationType() {
+        console.log(this.currentVersion.parts.location.capacity)
+      },
+      addNewItem(newValue, type) {
+        switch (type) {
+          case "role":
+            this.currentVersion.instructions.roles.push({
+              value: newValue,
+            });
+            console.log(this.currentVersion.instructions.roles);
+            break;
+          case "material":
+            this.currentVersion.parts.materials.push({
+              value: newValue,
+            });
+            break;
+          case "spot":
+            this.currentVersion.parts.location.spots.push({
+              value: newValue,
+            });
+            break;
+          default:
+            console.log("reseting card");
         }
+      },
+      addNewHap(newID, ) {
+        this.currentVersion.instructions.timeline.newID
       }
     }
   }
-
 </script>
-<style>
-  .animation-in {
-    transform-origin:left;
-    animation: in .6s ease-in-out;
-  }
-  .animation-out {
-    transform-origin:bottom left;
-    animation: out .6s ease-in-out;
-  }
-</style>
-
-<!-- <template>
-  <form @submit="handleSubmit">
-    <div class="box">
-      <div class="field">
-        <label class="label">What is the impact you want to have?</label>
-        <div class="control">
-          <input class="textarea" type="text" placeholder="Intended impact" v-model="outline.impact" required>
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="field">
-        <label class="label">How will that impact be measured?</label>
-        <div class="control">
-          <input class="textarea" type="text" placeholder="Measure of impact" v-model="outline.measure" required>
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="field">
-        <label class="label">How is that impact achieved?</label>
-        <div class="control">
-          <input class="textarea" type="text" placeholder="Method" v-model="outline.method" required>
-        </div>
-      </div>
-    </div> 
-    
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Environment
-        </p>
-        <button class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          <div class="field">
-            <div class="control">
-              <label class="checkbox">
-                <input type="checkbox" v-model="location.type">
-                indoor
-              </label>
-              <label class="checkbox">
-                <input type="checkbox" v-model="location.type">
-                outdoor
-              </label>
-              <label class="checkbox">
-                <input type="checkbox" v-model="location.type" checked>
-                not sure/I'm easy
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Power needed
-        </p>
-        <button class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="#" v-model="location.facilities.power">
-            </div>
-            <label class="label">kWh</label>
-            <label class="checkbox">
-              <input type="checkbox" v-model="location.facilities.power" checked>
-              no idea/I'm easy
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Water needed
-        </p>
-        <button class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="#" v-model="location.facilities.water">
-            </div>
-            <label class="label">gallons</label>
-            <label class="checkbox">
-              <input type="checkbox" v-model="location.facilities.water" checked>
-              no idea/I'm easy
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="field">
-        <label>Are there any foreseen risks that may require a hospital?</label>
-        <div class="control">
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.hospital">
-            Yes
-          </label>
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.hospital">
-            No
-          </label>
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.hospital">
-            Not sure
-          </label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="box">
-      <div class="field">
-        <label>Is there trash being collected or produced??</label>
-        <div class="control">
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.trash">
-            Yes
-          </label>
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.trash">
-            No
-          </label>
-          <label class="radio">
-            <input type="radio" name="question" v-model="location.facilities.trash">
-            Not sure
-          </label>
-        </div>
-      </div>
-    </div>
-  
-
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-link">Submit</button>
-      </div>
-      <div class="control">
-        <button class="button is-link is-light">Cancel</button>
-      </div>
-    </div>
-  </form>
-</template>
-
-<script>
-import { db } from '../firebase/firebase'
-import { doc, setDoc, collection } from 'firebase/firestore'
-
-const fbTemplates = collection(db, "Templates")
-
-export default {
-  data() {
-    return {
-      outline: {
-        impact: '',
-        measure: '',
-        method: '',
-      },
-      location: {
-        type: '',
-        facilities: {
-          hospital: '',
-          power: '',
-          water: '',
-          trash: ''
-        }
-      }
-    }
-  },
-  methods: {
-    handleSubmit() {
-      let inputForm = {
-        outline: {
-          impact: this.outline.impact,
-          measure: this.outline.measure,
-          method: this.outline.method,
-        },
-        location: {
-          type: this.location.type,   
-            power: this.location.power,
-            water: this.location.water,
-            trash: this.location.trash,
-          }
-        }
-
-      }
-      //firestore push stuff
-    }
-  }
-
-
-</script> -->

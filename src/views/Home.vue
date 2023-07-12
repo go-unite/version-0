@@ -1,8 +1,10 @@
 <template>
   <section class="hero">
     <div class="hero-body">
-      <div class="title">
-        Profile stats box
+      <div class="container has-text-centered">
+        <div class="title">
+          Profile stats box
+        </div>
       </div>
     </div>
   </section>
